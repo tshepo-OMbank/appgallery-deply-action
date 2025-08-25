@@ -5,7 +5,7 @@ branding:
   icon: "upload"
   color: "blue"
 inputs:
-  client-id: # Client Id
+  client-id: # Client Id here
     description: "Client Id"
     required: true
   client-key: # Client Key
@@ -24,7 +24,7 @@ inputs:
   file-name: # File name can be customized, default value is app-release.
     description: "desired file name to upload"
     required: false
-    default: 'app-release'
+    default: "app-release"
   submit:
     description: "whether or not to submit automatically"
     required: false
