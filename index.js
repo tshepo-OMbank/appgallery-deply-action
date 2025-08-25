@@ -42,6 +42,14 @@ function getToken({ clientId, clientKey }) {
  * @param fileExt File name extension apk/rpk/pdf/jpg/jpeg/png/bmp/mp4/mov/aab.
  */
 async function getUploadUrl({ appId, fileExt, clientId, token }) {
+  console.log(
+    `client: ${clientId}, token: ${token}, appId: ${appId}, fileExt: ${fileExt}`
+  );
+
+  console.log(
+    "Req Log: ",
+    `${domain}/publish/v2/upload-url?appId=${appId}&suffix=${fileExt}`
+  );
   console.log("Get Upload URL .... ⌛️");
   var config = {
     method: "get",
@@ -123,7 +131,15 @@ function uploadFile({
  * @param  {} fileExt
  * @param  {} fileName
  */
-function updateAppFileInfo({ fileDestUrl, size, appId, clientId, token, fileExt, fileName }) {
+function updateAppFileInfo({
+  fileDestUrl,
+  size,
+  appId,
+  clientId,
+  token,
+  fileExt,
+  fileName,
+}) {
   console.log("Update App File Info .... ⌛️");
   var data = JSON.stringify({
     fileType: "5",
@@ -150,12 +166,22 @@ function updateAppFileInfo({ fileDestUrl, size, appId, clientId, token, fileExt,
   return axios(config);
 }
 
-async function startDeply({ clientId, clientKey, appId, fileExt, filePath, fileName, submit }) {
+async function startDeply({
+  clientId,
+  clientKey,
+  appId,
+  fileExt,
+  filePath,
+  fileName,
+  submit,
+}) {
   try {
     const newToken = await getToken({
       clientId,
       clientKey,
     });
+
+    console.log(`Token : ${newToken.data.access_token}`);
     const uploadUrlInfo = await getUploadUrl({
       clientId,
       fileExt,
@@ -183,11 +209,11 @@ async function startDeply({ clientId, clientKey, appId, fileExt, filePath, fileN
       fileDestUrl:
         uploadInfo.data.result.UploadFileRsp.fileInfoList[0].fileDestUlr,
       fileExt,
-      fileName
+      fileName,
     });
     if (updateFileInfo.data.ret.msg === "success") {
       console.log("successfully uploaded 🎉🎉🎉🎉🎉🎉");
-      if (submit === 'true') {
+      if (submit === "true") {
         const submitResult = await submitApp({
           appId,
           clientId,
@@ -196,8 +222,8 @@ async function startDeply({ clientId, clientKey, appId, fileExt, filePath, fileN
         if (submitResult.data.ret.msg === "success") {
           console.log("successfully submitted 🎉🎉🎉🎉🎉🎉");
         } else {
-              console.log(submitResult.data.ret.msg);
-              core.setFailed(submitResult.data.ret.msg);
+          console.log(submitResult.data.ret.msg);
+          core.setFailed(submitResult.data.ret.msg);
         }
       }
     } else {
@@ -209,19 +235,28 @@ async function startDeply({ clientId, clientKey, appId, fileExt, filePath, fileN
 }
 
 try {
-  const clientId = core.getInput("client-id");
-  const clientKey = core.getInput("client-key");
   const appId = core.getInput("app-id");
   const fileExt = core.getInput("file-extension");
   const filePath = core.getInput("file-path");
   const fileName = core.getInput("file-name");
   const submit = core.getInput("submit");
 
+  const clientId = core.getInput("client-id");
+  const clientKey = core.getInput("client-key");
+
   console.log(
     chalk.yellow(figlet.textSync("AppGallery", { horizontalLayout: "full" }))
   );
 
-  startDeply({ clientId, clientKey, appId, fileExt, filePath, fileName, submit });
+  startDeply({
+    clientId,
+    clientKey,
+    appId,
+    fileExt,
+    filePath,
+    fileName,
+    submit,
+  });
 } catch (error) {
   core.setFailed(error.message);
 }

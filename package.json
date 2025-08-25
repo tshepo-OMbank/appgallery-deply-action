@@ -16,6 +16,9 @@
   "bugs": {
     "url": "https://github.com/muhamedzeema/appgallery-deply-action/issues"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "homepage": "https://github.com/muhamedzeema/appgallery-deply-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.7",
