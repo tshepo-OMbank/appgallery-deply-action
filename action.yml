@@ -1,4 +1,4 @@
-name: "Deploy to Huawei App Gallery"
+name: "Deploy to Huawei App Gallery Node 20"
 description: "Uploads and releases apps to Huawei App Gallery."
 author: "Muhamed Zeema"
 branding:
