@@ -1,0 +1,20 @@
+name: Test AppGallery Deploy Action
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test AppGallery Deploy
+        uses: ./
+        with:
+          client-id: ${{ secrets.CLIENT_ID }}
+          client-key: ${{ secrets.CLIENT_KEY }}
+          app-id: ${{ secrets.APP_ID }}
+          file-extension: apk
+          file-path: app-huawei-release.apk
+          file-name: OMBank-INT-LOCALTEST
+          submit: true
